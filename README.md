@@ -30,8 +30,8 @@ O frontend deve ser responsável por fornecer uma interface para os empresas e u
 
 - Para Empresas
     - Cadastro: permitir que um nova empresa se cadastre no sistema, fornecendo informações como nome, email e senha.
-    - Login: permitir que os usuários façam login no sistema utilizando suas credenciais (email e senha).
-    - Logout: fornecer uma opção para que os usuários possam fazer logout do sistema.
+    - Login: permitir que as emmpresas façam login no sistema utilizando suas credenciais (email e senha).
+    - Logout: fornecer uma opção para que as empresas possam fazer logout do sistema.
     - Listagem de produtos: exibir uma lista de produtos disponíveis para compra.
     - Cadastro de produtos: permitir que as empresas cadastrem os produtos.
 
