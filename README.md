@@ -6,8 +6,8 @@ Neste teste serão avaliados seus conhecimentos e a metodologia aplicada no dese
 
 Neste desafio técnico, você deve desenvolver um serviço de e-commerce utilizando a tecnologia .NET 6 ou .NET 7 para backend e para o front é valido qualquer tecnologia, com os seguintes requisitos:
 
-##Requisitos
-###Frontend
+## Requisitos
+### Frontend
 O frontend deve ser responsável por fornecer uma interface para os usuários interagirem com o sistema de e-commerce. Os requisitos do frontend são os seguintes:
 
 - Cadastro de usuário: permitir que um novo usuário se cadastre no sistema, fornecendo informações como nome, email e senha.
@@ -16,7 +16,7 @@ O frontend deve ser responsável por fornecer uma interface para os usuários in
 - Listagem de produtos: exibir uma lista de produtos disponíveis para compra.
 - Compra de produtos: permitir que os usuários selecionem e comprem produtos.
 
-###Backend
+### Backend
 O backend deve fornecer uma API REST para suportar as funcionalidades do sistema de e-commerce. Os requisitos do backend são os seguintes:
 
 - Cadastro de usuário: implementar endpoints para permitir o cadastro de novos usuários no sistema.
@@ -28,7 +28,7 @@ O backend deve fornecer uma API REST para suportar as funcionalidades do sistema
 - Cadastro de produtos: implementar endpoints para permitir o cadastro de novos produtos pelas empresas.
 - Autenticação: implementar um mecanismo de autenticação seguro para proteger os endpoints sensíveis.
 
-Extra
+### Extra
 - Docker / Docker Compose: fornecer uma configuração do Docker para facilitar o ambiente de desenvolvimento e implantação do sistema.
 - Cache: implementar um mecanismo de cache para otimizar o desempenho do sistema, como o cache de consulta de produtos.
 - Processo de deploy: configurar o processo de deploy do código em serviços gratuitos da Azure, AWS, Heroku ou outros provedores de sua escolha.
