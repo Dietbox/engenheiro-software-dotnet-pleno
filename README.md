@@ -1,3 +1,7 @@
+# Engenheiro de Software .NET Pleno
+
+Neste teste serão avaliados seus conhecimentos e a metodologia aplicada no desenvolvimento de au
+
 - REST
 - BANCO DE DADOS RELACIONAL
 - TESTES INTEGRAÇÃO / UNITÁRIO
@@ -7,7 +11,11 @@
 - cache
 - autenticação
 
-
+SERVIÇO ECOMMERCE
+- controle de acesso
+- venda de produto
+- empresa (cadastra produto)
+- usuario (compra produto)
 
 
 REQUISITOS
@@ -16,3 +24,5 @@ REQUISITOS
 
 EXTRA 
 - docker/docker-compose
+
+
