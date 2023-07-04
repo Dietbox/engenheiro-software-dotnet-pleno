@@ -14,8 +14,8 @@ namespace ECommerce.Api.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Login([FromBody] User user, [FromServices] AccessManager accessManager)
         {
-            if (await accessManager.ValidarCredenciaisAsync(user))
-                return Ok(accessManager.GerarToken(user));
+            if (await accessManager.ValidateCredentials(user))
+                return Ok(accessManager.GenerateToken(user));
 
             return Unauthorized();
         }
@@ -26,7 +26,7 @@ namespace ECommerce.Api.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Register([FromBody] User userDto, [FromServices] AccessManager accessManager)
         {
-            var ok = await accessManager.CriarUsuario(userDto.Email);
+            var ok = await accessManager.CreateUser(userDto.Email);
 
             if (ok)
             {

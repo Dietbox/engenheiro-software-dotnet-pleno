@@ -27,7 +27,7 @@ namespace ECommerce.Infra.Auth
             _tokenConfigurations = tokenConfigurations;
         }
 
-        public async Task<bool> CriarUsuario(string email)
+        public async Task<bool> CreateUser(string email)
         {
             var defaultPassword = "101112";
 
@@ -37,7 +37,7 @@ namespace ECommerce.Infra.Auth
                 UserName = email
             };
 
-            var usuarioExistente = await UsuarioAsync(email);
+            var usuarioExistente = await UserExists(email);
 
             if (usuarioExistente is null)
             {
@@ -45,47 +45,48 @@ namespace ECommerce.Infra.Auth
 
                 if (newUserResponse.Succeeded)
                 {
-                    //await _userManager.AddToRoleAsync(usuario, Roles.ROLE_API);
+                    var roleAdded = await _userManager.AddToRoleAsync(usuario, Roles.ROLE_API);
+
+                    return roleAdded.Succeeded;
                 }
 
-                return true;
+                return newUserResponse.Succeeded;
             }
 
             return false;
         }
 
-        public async Task<ApplicationUser> UsuarioAsync(string email)
+        public async Task<ApplicationUser> UserExists(string userEmail)
         {
-            ApplicationUser usuario = null;
+            ApplicationUser user = new();
 
-            if (email != null && !string.IsNullOrWhiteSpace(email))
-                usuario = await _userManager.FindByEmailAsync(email);
+            if (userEmail != null && !string.IsNullOrWhiteSpace(userEmail))
+                user = await _userManager.FindByEmailAsync(userEmail);
 
-            return usuario;
+            return user;
         }
 
-        public async Task<bool> ValidarCredenciaisAsync(User user)
+        public async Task<bool> ValidateCredentials(User user)
         {
-            bool credenciaisValidas = false;
+            bool validCredentials = false;
 
-            ApplicationUser usuarioIdentity = await UsuarioAsync(user.Email);
+            ApplicationUser identityUser = await UserExists(user.Email);
 
-            if (usuarioIdentity != null)
+            if (identityUser is not null)
             {
-                var resultadoLogin = await _signInManager
-                    .CheckPasswordSignInAsync(usuarioIdentity, user.Password, false);
+                var result = await _signInManager
+                    .CheckPasswordSignInAsync(identityUser, user.Password, false);
 
-                if (resultadoLogin.Succeeded)
+                if (result.Succeeded)
                 {
-                    credenciaisValidas = _userManager.IsInRoleAsync(
-                        usuarioIdentity, Roles.ROLE_API).Result;
+                    validCredentials = _userManager.IsInRoleAsync(identityUser, Roles.ROLE_API).Result;
                 }
             }
 
-            return credenciaisValidas;
+            return validCredentials;
         }
 
-        public AcessToken GerarToken(User user)
+        public AcessToken GenerateToken(User user)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
                 new GenericIdentity(user.Email, "Login"),
@@ -95,9 +96,8 @@ namespace ECommerce.Infra.Auth
                         }
                 );
 
-            DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao +
-                TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
+            DateTime createAt = DateTime.Now;
+            DateTime expirationDate = createAt + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
 
             var handler = new JwtSecurityTokenHandler();
 
@@ -107,8 +107,8 @@ namespace ECommerce.Infra.Auth
                 Audience = _tokenConfigurations.Audience,
                 SigningCredentials = _signingConfigurations.SigningCredentials,
                 Subject = identity,
-                NotBefore = dataCriacao,
-                Expires = dataExpiracao
+                NotBefore = createAt,
+                Expires = expirationDate
             });
 
             var token = handler.WriteToken(securityToken);
@@ -116,8 +116,8 @@ namespace ECommerce.Infra.Auth
             return new AcessToken()
             {
                 Authenticated = true,
-                Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                Created = createAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Token = token,
                 Message = "OK"
             };
