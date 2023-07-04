@@ -1,4 +1,5 @@
 ﻿using ECommerce.Domain.Entities;
+using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Infra.Auth;
 using ECommerce.Infra.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,7 +34,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<AccessManager>();
+builder.Services.AddScoped<IAccessManager, AccessManager>();
 
 var signingConfigurations = new SigningConfigurations();
 builder.Services.AddSingleton(signingConfigurations);

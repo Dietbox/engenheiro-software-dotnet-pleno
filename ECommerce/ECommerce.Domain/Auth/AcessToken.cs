@@ -1,4 +1,4 @@
-﻿namespace ECommerce.Infra.Auth
+﻿namespace ECommerce.Domain.Auth
 {
     public class AcessToken
     {

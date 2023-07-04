@@ -1,4 +1,6 @@
-﻿using ECommerce.Domain.Entities;
+﻿using ECommerce.Domain.Auth;
+using ECommerce.Domain.Entities;
+using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +10,7 @@ using System.Security.Principal;
 
 namespace ECommerce.Infra.Auth
 {
-    public class AccessManager
+    public class AccessManager : IAccessManager
     {
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
