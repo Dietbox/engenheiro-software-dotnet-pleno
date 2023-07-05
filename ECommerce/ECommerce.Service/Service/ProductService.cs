@@ -59,5 +59,17 @@ namespace ECommerce.Service.Service
 
             return Enumerable.Empty<ProductDto>();
         }
+
+        public async Task<IEnumerable<ProductDto>> ListAllProducts()
+        {
+            var products = await _productRepository.GetAllAsync();
+
+            return products.Select(x => new ProductDto()
+            {
+                Id = x.Id,
+                BarCode = x.BarCode,
+                Description = x.Description
+            });
+        }
     }
 }

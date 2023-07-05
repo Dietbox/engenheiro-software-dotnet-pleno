@@ -13,7 +13,6 @@ namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.ROLE_COMPANY)]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -25,6 +24,7 @@ namespace ECommerce.Api.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.ROLE_COMPANY)]
         public async Task<IActionResult> Create([FromBody] ProductInputModel product)
         {
             if (ModelState.IsValid)
@@ -39,9 +39,20 @@ namespace ECommerce.Api.Controllers
 
         [HttpGet]
         [Route("listcompanyproducts")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Roles.ROLE_COMPANY)]
         public async Task<IActionResult> ListCompanyProducts()
         {
             var products = await _productService.ListProductsByCompany(User.Identity.Name);
+
+            return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("listallproducts")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.ROLE_ADMIN},{Roles.ROLE_API}")]
+        public async Task<IActionResult> ListAllProducts()
+        {
+            var products = await _productService.ListAllProducts();
 
             return Ok(products);
         }
