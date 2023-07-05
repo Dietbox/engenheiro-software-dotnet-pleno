@@ -17,6 +17,7 @@ namespace ECommerce.Infra.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserMap());
+            builder.ApplyConfiguration(new CompanyMap());
 
             base.OnModelCreating(builder);
         }
