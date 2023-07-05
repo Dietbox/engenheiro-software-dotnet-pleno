@@ -1,5 +1,5 @@
-﻿using ECommerce.Domain.Entities;
-using ECommerce.Infra.Auth;
+﻿using ECommerce.Domain.Auth;
+using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce.Infra.Context
@@ -14,9 +14,11 @@ namespace ECommerce.Infra.Context
            
             if (!roleManager.RoleExistsAsync(Roles.ROLE_API).Result)
             {
-                var result = roleManager.CreateAsync(new IdentityRole(Roles.ROLE_API)).Result;
+                var defaultResult = roleManager.CreateAsync(new IdentityRole(Roles.ROLE_API)).Result;
 
-                if (!result.Succeeded)
+                var companyResult = roleManager.CreateAsync(new IdentityRole(Roles.ROLE_COMPANY)).Result;
+
+                if (!defaultResult.Succeeded || !companyResult.Succeeded)
                 {
                     throw new Exception($"Failed to create role {Roles.ROLE_API}.");
                 }

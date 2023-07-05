@@ -1,8 +1,12 @@
 ﻿using ECommerce.Api.Middleware;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interfaces.Infra;
+using ECommerce.Domain.Interfaces.Repository;
+using ECommerce.Domain.Interfaces.Services;
 using ECommerce.Infra.Auth;
 using ECommerce.Infra.Context;
+using ECommerce.Infra.Repository;
+using ECommerce.Service.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +38,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAccessManager, AccessManager>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<TokenManagerMiddleware>();
 
 var signingConfigurations = new SigningConfigurations();

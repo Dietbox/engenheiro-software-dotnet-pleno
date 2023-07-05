@@ -1,18 +1,19 @@
 ﻿using ECommerce.Domain.Auth;
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Models;
+using System.Data;
 
 namespace ECommerce.Domain.Interfaces.Infra
 {
     public interface IAccessManager
     {
-        Task<bool> CreateUser(User user);
+        Task<ApplicationUser> CreateUser(UserLogin user);
         void DeactivateCurrentAsync();
         void DeactivateToken(string token);
-        AcessToken GenerateToken(User user);
+        AcessToken GenerateToken(UserLogin user);
         bool IsActive(string token);
         bool IsCurrentActiveToken();
         Task<ApplicationUser> UserExists(string userEmail);
-        Task<bool> ValidateCredentials(User user);
+        Task<bool> ValidateCredentials(UserLogin user);
     }
 }

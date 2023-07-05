@@ -41,32 +41,30 @@ namespace ECommerce.Infra.Auth
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<bool> CreateUser(User user)
+        public async Task<ApplicationUser> CreateUser(UserLogin user)
         {
-            ApplicationUser usuario = new ApplicationUser()
+            ApplicationUser newUser = new ApplicationUser()
             {
                 Email = user.Email,
                 UserName = user.Email,
                 EmailConfirmed = true,
             };
 
-            var usuarioExistente = await UserExists(user.Email);
+            var usuarioExistente = await UserExists(newUser.Email);
 
             if (usuarioExistente is null)
             {
-                var newUserResponse = await _userManager.CreateAsync(usuario, user.Password);
+                var newUserResponse = await _userManager.CreateAsync(newUser, user.Password);
 
                 if (newUserResponse.Succeeded)
                 {
-                    var roleAdded = await _userManager.AddToRoleAsync(usuario, Roles.ROLE_API);
-
-                    return roleAdded.Succeeded;
+                    await _userManager.AddToRoleAsync(newUser, Roles.ROLE_API);
                 }
 
-                return newUserResponse.Succeeded;
+                return newUser;
             }
 
-            return false;
+            return null;
         }
         public async Task<ApplicationUser> UserExists(string userEmail)
         {
@@ -77,7 +75,7 @@ namespace ECommerce.Infra.Auth
 
             return user;
         }
-        public async Task<bool> ValidateCredentials(User user)
+        public async Task<bool> ValidateCredentials(UserLogin user)
         {
             bool validCredentials = false;
 
@@ -96,7 +94,7 @@ namespace ECommerce.Infra.Auth
 
             return validCredentials;
         }
-        public AcessToken GenerateToken(User user)
+        public AcessToken GenerateToken(UserLogin user)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
                 new GenericIdentity(user.Email, "Login"),
