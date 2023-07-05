@@ -13,10 +13,12 @@ namespace ECommerce.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICompanyService _companyService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ICompanyService companyService)
         {
             _userService = userService;
+            _companyService = companyService;
         }
 
         [HttpPost]
@@ -50,6 +52,23 @@ namespace ECommerce.Api.Controllers
                     return NoContent();
 
                 BadRequest("User already exists!");
+            }
+
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost]
+        [Route("registeracompany")]
+        public async Task<IActionResult> RegisterCompany([FromBody] CompanyAppRegister companyUserApp)
+        {
+            if (ModelState.IsValid)
+            {
+                var companyAdded = await _companyService.CreateUserApp(companyUserApp);
+
+                if (companyAdded)
+                    return NoContent();
+
+                BadRequest("Company already exists!");
             }
 
             return BadRequest(ModelState);
