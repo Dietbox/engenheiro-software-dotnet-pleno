@@ -1,6 +1,5 @@
 ﻿using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Domain.Models;
-using ECommerce.Infra.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,14 +31,17 @@ namespace ECommerce.Api.Controllers
         [Route("register")]
         [AllowAnonymous]
         [Produces("application/json")]
-        public async Task<IActionResult> Register([FromBody] User userDto)
+        public async Task<IActionResult> Register([FromBody] User user)
         {
-            var userCreated = await _accessManager.CreateUser(userDto.Email);
+            if (ModelState.IsValid)
+            {
+                var userCreated = await _accessManager.CreateUser(user);
 
-            if (userCreated)
-                return Ok();
-            
-            return BadRequest();
+                if (userCreated)
+                    return NoContent();
+            }
+
+            return BadRequest(ModelState);
         }
     }
 }

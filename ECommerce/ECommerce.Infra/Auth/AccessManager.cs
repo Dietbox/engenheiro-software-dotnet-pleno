@@ -29,21 +29,20 @@ namespace ECommerce.Infra.Auth
             _tokenConfigurations = tokenConfigurations;
         }
 
-        public async Task<bool> CreateUser(string email)
+        public async Task<bool> CreateUser(User user)
         {
-            var defaultPassword = "101112";
-
             ApplicationUser usuario = new ApplicationUser()
             {
-                Email = email,
-                UserName = email
+                Email = user.Email,
+                UserName = user.Email,
+                EmailConfirmed = true,
             };
 
-            var usuarioExistente = await UserExists(email);
+            var usuarioExistente = await UserExists(user.Email);
 
             if (usuarioExistente is null)
             {
-                var newUserResponse = await _userManager.CreateAsync(usuario, defaultPassword);
+                var newUserResponse = await _userManager.CreateAsync(usuario, user.Password);
 
                 if (newUserResponse.Succeeded)
                 {
