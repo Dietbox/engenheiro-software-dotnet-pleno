@@ -13,11 +13,14 @@ namespace ECommerce.Infra.Context
         }
 
         public DbSet<User> User { get; set; }
+        public DbSet<Company> Company { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserMap());
             builder.ApplyConfiguration(new CompanyMap());
+            builder.ApplyConfiguration(new ProductMap());
 
             base.OnModelCreating(builder);
         }

@@ -12,7 +12,7 @@ namespace ECommerce.Domain.Interfaces.Infra
         Task<AcessToken> GenerateToken(ApplicationUser user);
         bool IsActive(string token);
         bool IsCurrentActiveToken();
-        Task<ApplicationUser> UserExists(string userEmail);
+        Task<ApplicationUser> GetUser(string userEmail);
         Task<ApplicationUser> ValidateCredentials(UserLogin user);
     }
 }

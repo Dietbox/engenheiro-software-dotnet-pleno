@@ -48,7 +48,7 @@ namespace ECommerce.Infra.Auth
                 EmailConfirmed = true,
             };
 
-            var usuarioExistente = await UserExists(newUser.Email);
+            var usuarioExistente = await GetUser(newUser.Email);
 
             if (usuarioExistente is null)
             {
@@ -64,7 +64,7 @@ namespace ECommerce.Infra.Auth
 
             return null;
         }
-        public async Task<ApplicationUser> UserExists(string userEmail)
+        public async Task<ApplicationUser> GetUser(string userEmail)
         {
             ApplicationUser user = new();
 
@@ -75,7 +75,7 @@ namespace ECommerce.Infra.Auth
         }
         public async Task<ApplicationUser> ValidateCredentials(UserLogin user)
         {
-            ApplicationUser identityUser = await UserExists(user.Email);
+            ApplicationUser identityUser = await GetUser(user.Email);
 
             if (identityUser is not null)
             {

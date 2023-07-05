@@ -2,7 +2,7 @@
 {
     public class Company : Entity
     {
-        public Company() { }
+        private Company() { }
 
         public Company(string name, string taxId, ApplicationUser applicationUser)
         {
