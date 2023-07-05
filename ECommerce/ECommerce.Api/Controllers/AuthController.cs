@@ -23,8 +23,10 @@ namespace ECommerce.Api.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Login([FromBody] UserLogin user)
         {
-            if (await _accessManager.ValidateCredentials(user))
-                return Ok(_accessManager.GenerateToken(user));
+            var currentUser = await _accessManager.ValidateCredentials(user);
+
+            if (currentUser is not null)
+                return Ok(await _accessManager.GenerateToken(currentUser));
 
             return Unauthorized();
         }

@@ -17,9 +17,9 @@ namespace ECommerce.Service.Service
             _userRepository = userRepository;
         }
 
-        public async Task<bool> CreateUserApp(UserAppRegister userApp)
+        public async Task<bool> CreateUserApp(UserAppRegister userApp, string? role = null)
         {
-            var userCreated = await _accessManager.CreateUser(userApp);
+            var userCreated = await _accessManager.CreateUser(userApp, role);
 
             if (userCreated is not null)
             {

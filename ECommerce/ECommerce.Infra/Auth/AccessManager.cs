@@ -4,12 +4,10 @@ using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Concurrent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -41,7 +39,7 @@ namespace ECommerce.Infra.Auth
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApplicationUser> CreateUser(UserLogin user)
+        public async Task<ApplicationUser> CreateUser(UserLogin user, string? role = null)
         {
             ApplicationUser newUser = new ApplicationUser()
             {
@@ -58,7 +56,7 @@ namespace ECommerce.Infra.Auth
 
                 if (newUserResponse.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(newUser, Roles.ROLE_API);
+                    await _userManager.AddToRoleAsync(newUser, string.IsNullOrEmpty(role) ? Roles.ROLE_API : role);
                 }
 
                 return newUser;
@@ -75,10 +73,8 @@ namespace ECommerce.Infra.Auth
 
             return user;
         }
-        public async Task<bool> ValidateCredentials(UserLogin user)
+        public async Task<ApplicationUser> ValidateCredentials(UserLogin user)
         {
-            bool validCredentials = false;
-
             ApplicationUser identityUser = await UserExists(user.Email);
 
             if (identityUser is not null)
@@ -88,21 +84,26 @@ namespace ECommerce.Infra.Auth
 
                 if (result.Succeeded)
                 {
-                    validCredentials = _userManager.IsInRoleAsync(identityUser, Roles.ROLE_API).Result;
+                    return identityUser;
                 }
             }
 
-            return validCredentials;
+            return identityUser;
         }
-        public AcessToken GenerateToken(UserLogin user)
+        public async Task<AcessToken> GenerateToken(ApplicationUser user)
         {
-            ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(user.Email, "Login"),
-                new[] {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
-                        }
-                );
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var claims = new List<Claim>() 
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Email)
+            };
+
+            foreach (var role in userRoles)
+                claims.Add(new Claim(ClaimTypes.Role, role));
+
+            var identity = new ClaimsIdentity(
+                new GenericIdentity(user.Email, "Login"), claims);
 
             DateTime createAt = DateTime.Now;
             DateTime expirationDate = createAt + TimeSpan.FromSeconds(_tokenConfigurations.Seconds);
