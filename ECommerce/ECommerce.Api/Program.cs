@@ -1,4 +1,5 @@
-﻿using ECommerce.Domain.Entities;
+﻿using ECommerce.Api.Middleware;
+using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Infra.Auth;
 using ECommerce.Infra.Context;
@@ -33,6 +34,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAccessManager, AccessManager>();
+builder.Services.AddScoped<TokenManagerMiddleware>();
 
 var signingConfigurations = new SigningConfigurations();
 builder.Services.AddSingleton(signingConfigurations);
@@ -68,6 +70,8 @@ builder.Services.AddAuthorization(auth =>
         .RequireAuthenticatedUser().Build());
 });
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,6 +84,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<TokenManagerMiddleware>();
 
 app.MapControllers();
 

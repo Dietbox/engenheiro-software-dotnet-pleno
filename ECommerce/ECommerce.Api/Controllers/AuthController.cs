@@ -1,11 +1,13 @@
 ﻿using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AuthController : Controller
     {
         private readonly IAccessManager _accessManager;
@@ -29,7 +31,6 @@ namespace ECommerce.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        [AllowAnonymous]
         [Produces("application/json")]
         public async Task<IActionResult> Register([FromBody] User user)
         {
@@ -43,5 +44,16 @@ namespace ECommerce.Api.Controllers
 
             return BadRequest(ModelState);
         }
+
+        [HttpPost]
+        [Route("logout")]
+        [Produces("application/json")]
+        public IActionResult LogOut()
+        {
+            _accessManager.DeactivateCurrentAsync();
+
+            return NoContent();
+        }
+
     }
 }

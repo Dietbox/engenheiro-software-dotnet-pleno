@@ -2,8 +2,14 @@
 using ECommerce.Domain.Entities;
 using ECommerce.Domain.Interfaces.Infra;
 using ECommerce.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Concurrent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -16,17 +22,23 @@ namespace ECommerce.Infra.Auth
         private SignInManager<ApplicationUser> _signInManager;
         private SigningConfigurations _signingConfigurations;
         private TokenConfigurations _tokenConfigurations;
-
+        private readonly IMemoryCache _cache;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public AccessManager(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             SigningConfigurations signingConfigurations,
-            TokenConfigurations tokenConfigurations)
+            TokenConfigurations tokenConfigurations,
+            IMemoryCache cache,
+            IHttpContextAccessor httpContextAccessor)
         {
+            _cache = cache;
             _userManager = userManager;
             _signInManager = signInManager;
             _signingConfigurations = signingConfigurations;
             _tokenConfigurations = tokenConfigurations;
+            _cache = cache;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<bool> CreateUser(User user)
@@ -56,7 +68,6 @@ namespace ECommerce.Infra.Auth
 
             return false;
         }
-
         public async Task<ApplicationUser> UserExists(string userEmail)
         {
             ApplicationUser user = new();
@@ -66,7 +77,6 @@ namespace ECommerce.Infra.Auth
 
             return user;
         }
-
         public async Task<bool> ValidateCredentials(User user)
         {
             bool validCredentials = false;
@@ -86,7 +96,6 @@ namespace ECommerce.Infra.Auth
 
             return validCredentials;
         }
-
         public AcessToken GenerateToken(User user)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
@@ -122,6 +131,45 @@ namespace ECommerce.Infra.Auth
                 Token = token,
                 Message = "OK"
             };
+        }
+        public void DeactivateCurrentAsync()
+        {
+            DeactivateToken(GetCurrentTokenFromHeader());
+        }
+        public void DeactivateToken(string token)
+        {
+            var options = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(
+                            TimeSpan.FromSeconds(_tokenConfigurations.Seconds));
+
+            _cache.Set(token, token, options);
+        }
+        private string GetCurrentTokenFromHeader()
+        {
+            var authorizationHeader = _httpContextAccessor
+                .HttpContext.Request.Headers["authorization"];
+
+            return authorizationHeader == StringValues.Empty
+                ? string.Empty
+                : authorizationHeader.Single().Split(" ").Last();
+        }
+        public bool IsCurrentActiveToken()
+        {
+            return IsActive(GetCurrentTokenFromHeader());
+        }
+        public bool IsActive(string token)
+        {
+            if (_cache.TryGetValue(token, out string tokenStored))
+            {
+                tokenStored = _cache.Get<string>(token);
+
+                if (tokenStored is null)
+                    return true;
+                
+                return !tokenStored.Equals(token);
+            }
+
+            return true;
         }
     }
 }
