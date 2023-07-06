@@ -3,11 +3,7 @@ using ECommerce.Domain.Interfaces.Services;
 using ECommerce.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace ECommerce.Api.Controllers
 {
@@ -50,9 +46,9 @@ namespace ECommerce.Api.Controllers
         [HttpGet]
         [Route("listallproducts")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = $"{Roles.ROLE_ADMIN},{Roles.ROLE_API}")]
-        public async Task<IActionResult> ListAllProducts()
+        public IActionResult ListAllProducts()
         {
-            var products = await _productService.ListAllProducts();
+            var products = _productService.ListAllProducts();
 
             return Ok(products);
         }

@@ -1,6 +1,8 @@
 ﻿using ECommerce.Domain.Auth;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ECommerce.Infra.Context
 {
@@ -8,10 +10,10 @@ namespace ECommerce.Infra.Context
     {
         private const string adminUser = "raufe.m@gmail.com";
         private const string defaultPassword = "101112";
+        private const string productListCacheKey = "productList";
 
-        public static void Seed(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Seed(ApplicationDbContext context, IMemoryCache cache, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-           
             if (!roleManager.RoleExistsAsync(Roles.ROLE_API).Result)
             {
                 var adminResult = roleManager.CreateAsync(new IdentityRole(Roles.ROLE_ADMIN)).Result;
@@ -48,6 +50,12 @@ namespace ECommerce.Infra.Context
                         $"Failed to create user.");
                 }
             }
+
+            var productlist = context.Product.Include(x => x.Company).ToList();
+
+            var options = new MemoryCacheEntryOptions().SetSize(productlist.Count());
+
+            cache.Set<List<Product>>(productListCacheKey, productlist, options);
         }
     }
 }

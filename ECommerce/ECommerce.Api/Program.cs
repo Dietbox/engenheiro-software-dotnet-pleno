@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
@@ -131,8 +132,10 @@ using (var scope = scopeFactory.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    
-    ApplicationDbInitializer.Seed(userManager, roleManager);
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var cache = scope.ServiceProvider.GetRequiredService<IMemoryCache>();
+
+    ApplicationDbInitializer.Seed(context, cache, userManager, roleManager);
 }
 
 app.Run();
