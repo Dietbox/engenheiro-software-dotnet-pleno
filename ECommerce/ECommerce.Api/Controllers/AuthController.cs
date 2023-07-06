@@ -36,7 +36,7 @@ namespace ECommerce.Api.Controllers
         [Produces("application/json")]
         public IActionResult LogOut()
         {
-            _accessManager.DeactivateCurrentAsync();
+            _accessManager.DeactivateCurrent(User.Identity.Name);
 
             return NoContent();
         }

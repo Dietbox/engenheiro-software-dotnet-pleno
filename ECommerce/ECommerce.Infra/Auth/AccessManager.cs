@@ -131,17 +131,17 @@ namespace ECommerce.Infra.Auth
                 Message = "OK"
             };
         }
-        public void DeactivateCurrentAsync()
+        public void DeactivateCurrent(string user)
         {
-            DeactivateToken(GetCurrentTokenFromHeader());
+            DeactivateToken(GetCurrentTokenFromHeader(), user);
         }
-        public void DeactivateToken(string token)
+        public void DeactivateToken(string token, string user)
         {
             var options = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(
                             TimeSpan.FromSeconds(_tokenConfigurations.Seconds));
 
-            _cache.Set(token, token, options);
+            _cache.Set(user, token, options);
         }
         private string GetCurrentTokenFromHeader()
         {
@@ -152,15 +152,18 @@ namespace ECommerce.Infra.Auth
                 ? string.Empty
                 : authorizationHeader.Single().Split(" ").Last();
         }
-        public bool IsCurrentActiveToken()
+        public bool IsCurrentActiveToken(string user)
         {
-            return IsActive(GetCurrentTokenFromHeader());
+            return IsActive(GetCurrentTokenFromHeader(), user);
         }
-        public bool IsActive(string token)
+        private bool IsActive(string token, string userLogged)
         {
-            if (_cache.TryGetValue(token, out string tokenStored))
+            if (string.IsNullOrEmpty(userLogged))
+                return true;
+
+            if (_cache.TryGetValue(userLogged, out string tokenStored))
             {
-                tokenStored = _cache.Get<string>(token);
+                tokenStored = _cache.Get<string>(userLogged);
 
                 if (tokenStored is null)
                     return true;

@@ -14,7 +14,9 @@ namespace ECommerce.Api.Middleware
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (_tokenManager.IsCurrentActiveToken())
+            var user = context.User.Identity.Name;
+
+            if (_tokenManager.IsCurrentActiveToken(user))
             {
                 await next(context);
 

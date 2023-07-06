@@ -7,11 +7,10 @@ namespace ECommerce.Domain.Interfaces.Infra
     public interface IAccessManager
     {
         Task<ApplicationUser> CreateUser(UserLogin user, string? role);
-        void DeactivateCurrentAsync();
-        void DeactivateToken(string token);
+        void DeactivateCurrent(string? name);
+        void DeactivateToken(string token, string user);
         Task<AcessToken> GenerateToken(ApplicationUser user);
-        bool IsActive(string token);
-        bool IsCurrentActiveToken();
+        bool IsCurrentActiveToken(string? user);
         Task<ApplicationUser> GetUser(string userEmail);
         Task<ApplicationUser> ValidateCredentials(UserLogin user);
     }
