@@ -9,7 +9,7 @@ namespace ECommerce.Infra.Context
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
+            this.Database.EnsureCreated();
         }
 
         public DbSet<User> User { get; set; }
