@@ -13,3 +13,6 @@
 /ECommerce/ECommerce.Api/ECommerce.Api.csproj.user
 /ECommerce/ECommerce.Service/bin/Debug/net6.0
 /ECommerce/ECommerce.Service/obj
+/ECommerce/.vscode
+/ECommerce/bin/Debug
+/ECommerce/obj
