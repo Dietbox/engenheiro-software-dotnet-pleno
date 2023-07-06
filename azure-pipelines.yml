@@ -6,17 +6,27 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
-variables:
-  buildConfiguration: 'Release'
-
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
+stages:
+- stage: Build
+  variables:
+    buildConfigurations: release
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: ubuntu-latest
+      steps:
+        - script: dotnet build ./ECommerce --configuration $(buildConfiguration)
+          displayName: 'dotnet build $(buildConfiguration)'
+- stage: Deploy
+  displayName: Deploy stage
+  jobs:
+    - deployment: deploy
+      displayName: Deploy job
+      environment: 'ECommerceDev'
+      pool:
+        vmImage: 'ubuntu-latest'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - script: echo 'Deploy ECommerceDev'
