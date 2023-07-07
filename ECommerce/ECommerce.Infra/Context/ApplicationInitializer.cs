@@ -53,9 +53,12 @@ namespace ECommerce.Infra.Context
 
             var productlist = context.Product.Include(x => x.Company).ToList();
 
-            var options = new MemoryCacheEntryOptions().SetSize(productlist.Count());
+            if (productlist.Count > 0)
+            {
+                var options = new MemoryCacheEntryOptions().SetSize(productlist.Count());
 
-            cache.Set<List<Product>>(productListCacheKey, productlist, options);
+                cache.Set<List<Product>>(productListCacheKey, productlist, options);
+            }
         }
     }
 }

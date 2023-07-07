@@ -16,3 +16,16 @@
 /ECommerce/.vscode
 /ECommerce/bin/Debug
 /ECommerce/obj
+/ECommerce.Service/bin
+/ECommerce.Service/obj/Debug/net6.0
+/ECommerce.Service/obj/Release/net6.0
+/ECommerce.Service/obj
+/ECommerce.Infra/bin
+/ECommerce.Infra/obj
+/ECommerce.Domain/bin
+/ECommerce.Domain/obj/Debug/net6.0
+/ECommerce.Domain/obj/Release/net6.0
+/ECommerce.Domain/obj
+/ECommerce.Api/bin
+/ECommerce.Api/obj
+*.user

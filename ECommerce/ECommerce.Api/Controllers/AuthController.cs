@@ -17,6 +17,12 @@ namespace ECommerce.Api.Controllers
             _accessManager = accessManager;
         }
 
+        /// <summary>
+        /// Faz login utilizando usuário e senha. Token JWT é fornecido
+        /// </summary>
+        /// <returns>Token JWT</returns>
+        /// <response code="200">Retorna Token JWT e outras informações</response>
+        /// <response code="401">Usuário ou senha inválidos.</response>
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
@@ -31,6 +37,11 @@ namespace ECommerce.Api.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Faz logoff da aplicação.
+        /// </summary>
+        /// <returns>Sem retorno</returns>
+        /// <response code="201">Sem retorno</response>
         [HttpPost]
         [Route("logout")]
         [Produces("application/json")]
