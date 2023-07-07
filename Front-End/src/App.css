@@ -1,0 +1,19 @@
+.card-disabled{
+  opacity: 0.5;
+}
+
+.produto-details-label{
+  display: block;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(165, 150, 150);
+  padding-bottom: 0px;
+  margin-bottom: -2px;
+}
+
+.nav-link-company.active{
+    color: #fff !important;
+    background-color: #157347 !important;
+    border-color: #146c43 !important;
+}

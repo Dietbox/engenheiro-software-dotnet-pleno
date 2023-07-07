@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Dietbox.ECommerce.WebAPI</RootNamespace>
+    <AssemblyName>Dietbox.ECommerce.API</AssemblyName>
+    <Title>Dietbox ECommerce API</Title>
+    <Authors>Leonardo Valcarenghi</Authors>
+    <Company>Dietbox</Company>
+    <Description>API de comunicação front-end.</Description>
+    <RepositoryUrl>https://github.com/leonardovalcarenghi/Dietbox-eCommerce</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/leonardovalcarenghi/Dietbox-eCommerce</PackageProjectUrl>
+    <Copyright>Leonardo Valcarenghi</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\ORM\ORM.csproj" />
+  </ItemGroup>
+
+</Project>
