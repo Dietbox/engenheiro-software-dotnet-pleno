@@ -1,57 +1,155 @@
-# Engenheiro de Software .NET Pleno
+# Dietbox e-Commerce
 
-Neste teste serão avaliados seus conhecimentos e a metodologia aplicada no desenvolvimento de aplicação .NET.
+Desenvolvido por Leonardo Valcarenghi
+<br/>
+Última atualização: 05/07/2023
 
-## O Desafio
+## Tecnologias
 
-O objetivo é criar um sistema de que permita o cadastro de usuários, login, logout, listagem de produtos, compra de produtos e cadastro de empresas e produtos.
-## Requisitos - Backend
-O backend deve fornecer uma API REST para suportar as funcionalidades do sistema de e-commerce. Os requisitos do backend são os seguintes:
+### **Back-End**
 
-- Cadastro de usuário: implementar endpoints para permitir o cadastro de novos usuários no sistema.
-- Cadastro de empresa: implementar endpoints para permitir o cadastro de novas empresas no sistema.
-- Login: implementar endpoints para autenticar os empresas no sistema e fornecer tokens de acesso.
-- Logout: implementar endpoints para invalidar os tokens de acesso e realizar o logout dos empresas.
-- Listagem de produtos: implementar endpoints para listar os produtos disponíveis no sistema:
-    - Quando usuário, retornar todos os produtos;
-    - Quando empresa, retornar somente os produtos da empresa;
-- Cadastro de produtos: implementar endpoints para permitir o cadastro de novos produtos pelas empresas.
-- Autenticação: implementar um mecanismo de autenticação seguro para proteger os endpoints sensíveis.
+- Microsoft .NET 6
+- Entity Framework Core
+- AutoMapper
+- JWT
+- MemoryCache
 
-## [OPCIONAL] Requisitos - Frontend
-O frontend deve ser responsável por fornecer uma interface para os empresas e usuários interagirem com o sistema de e-commerce. Os requisitos do frontend são os seguintes:
+### **Front-End**
 
-- Para Usuários
-    - Cadastro: permitir que um novo usuário se cadastre no sistema, fornecendo informações como nome, email e senha.
-    - Login: permitir que os usuários façam login no sistema utilizando suas credenciais (email e senha).
-    - Logout: fornecer uma opção para que os usuários possam fazer logout do sistema.
-    - Listagem de produtos: exibir uma lista de produtos disponíveis para compra.
-    - Compra de produtos: permitir que os usuários selecionem e comprem produtos.    
+- React
+- React Router DOM
+- Bootstrap 5.3
 
-- Para Empresas
-    - Cadastro: permitir que um nova empresa se cadastre no sistema, fornecendo informações como nome, email e senha.
-    - Login: permitir que as emmpresas façam login no sistema utilizando suas credenciais (email e senha).
-    - Logout: fornecer uma opção para que as empresas possam fazer logout do sistema.
-    - Listagem de produtos: exibir uma lista de produtos disponíveis para compra.
-    - Cadastro de produtos: permitir que as empresas cadastrem os produtos.
+### **DataBase**
 
-## Especificações
-- A utilização de qualquer biblioteca é permitida, desde que justificada posteriormente.
-- O backend sistema deve ser desenvolvido utilizando a linguagem C# e o framework .NET 6 ou 7.
-- O frontend pode ser desenvolvido em qualquer tecnologia, seja em tecnologia .NET (MVC, Razor, Blazor) ou javacript (VueJS, Angular, ReactJS, etc.)
-- O banco de dados pode ser escolhido de acordo com a sua preferência, seja SQL Server, MySQL, PostgreSQL, MongoDB, etc.
+- SQL Server Express
 
-## Extra
-- Docker / Docker Compose: fornecer uma configuração do Docker para facilitar o ambiente de desenvolvimento e implantação do sistema.
-- Cache: implementar um mecanismo de cache para otimizar o desempenho do sistema, como o cache de consulta de produtos.
-- Processo de deploy: configurar o processo de deploy do código em serviços gratuitos da Azure, AWS, Heroku ou outros provedores de sua escolha.
+<br>
 
-## Observações
-- Não se preocupe tanto com o Frontend, o foco é o Backend. Mas se seu foco é ser fullstack, você pode explorar isso desenvolvendo o front-end solicitado e vai ser um grande diferencial.
-- Aplique os seus conhecimentos e boas práticas de OOP, DDD, SOLID e Clean Code.
-- Não existe certo ou errado, o nosso objetivo é entender como você pensa e como você resolve problemas.
+## Configuração
 
-## Entrega
-- Ao finalizar o desenvolvimento, submeta um pull request para este repositório com o seu código.
-- Inclua um arquivo README.md com as instruções para executar o seu código.
-- [OPCIONAL] Inclua um arquivo COMMENTS.md com suas considerações sobre o desafio, o que você faria diferente ou como poderíamos melhorar o desafio.
+### **Configurando o Banco de Dados**
+
+1. Instale o [_SQL Server Express_](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) (se necessário) e reinicie o computador.
+2. Instale o [_SQL Server Data Tools_](https://learn.microsoft.com/pt-br/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver16) (se necessário)  pelo _Visual Studio Installer_.
+
+### **Configurando o Back-End**
+
+1. Abra o projeto no Visual Studio.
+2. Instale as dependências do NuGet (se necessárias).
+3. Configure a solução para inicializar somente o projeto de **API**.
+4. Execute!
+
+> **LOCALHOST** > <br>
+> Certifique-se de que o back-end esteja rodando na porta **3333**.
+> <br> > _Essa é a porta que o front-end está configurado._
+
+<br>
+
+### **Configurando o Front-End**
+
+### `npm install`
+
+Execute esse comando para instalar todas as dependências do React.
+
+### `npm start`
+
+Após as depedências terem sido instaladas, execute o comando `npm start` para iniciar a aplicação.
+
+<br>
+
+# Projeto
+
+## Tela de Boas-Vindas
+
+Ao iniciar o **front-end**, você vai se deparar com a tela de boas vindas.
+<br>
+Nela contém duas ações, **fazer login** ou **criar conta**.
+
+![Tela](./readme-images/print-tela-inicio.png)
+
+<br>
+<hr>
+<br>
+
+## Tela de Criar Conta
+
+Na tela de **criar conta** é possível preencher os dados do **cliente** ou da **empresa** para fazer o devido cadastro e liberar o acesso ao sistema.
+
+![Tela](./readme-images/print-tela-cadastro.PNG)
+
+<br>
+<hr>
+<br>
+
+## Tela de Login
+
+Na tela de login você tem a opção de acessar o sistema como **cliente** ou **empresa**.
+
+![Tela](./readme-images/print-tela-login.PNG)
+
+Alguns clientes e empresas já estão criados para fins de teste. Se quiser você pode experimentar qualquer um destes:
+
+**Clientes**
+
+- cliente01@email.com
+- cliente02@email.com
+- cliente03@email.com
+
+**Empresas**
+
+- empresa01@email.com
+- empresa02@email.com
+- empresa03@email.com
+- empresa04@email.com
+- empresa05@email.com
+
+A senha para qualquer um destes e-mails é **123456789**.
+
+<br>
+<hr>
+<br>
+
+## Tela de Início
+
+A tela de início _(depois de autenticado)_ é a tela que vai exibir os produtos cadastrados, porém dependendo do tipo de _entidade_ logada, a tela tem um padrão diferente.
+
+### Autenticado como **cliente**:
+- Todos os **produtos** de todas as empresas serão listados.
+- Permite **comprar** os produtos.
+- Barra de **navegação** fica **azul**.
+
+![Tela](./readme-images/print-tela-produtos-como-cliente.PNG)
+
+<br>
+
+### Autenticado como **empresa**:
+- Apenas produtos criados pela empresa autenticada serão mostrados.
+- Legenda de _Admin_ é exibido.
+- Menu de **Produtos** fica disponível na barra de navegação.
+- Barra de **navegação** fica na cor **verde**.
+
+![Tela](./readme-images/print-tela-produtos-como-empresa.PNG)
+
+<br>
+<hr>
+<br>
+
+## Tela de Cadastrar de Produto
+
+Esta é a tela onde a empresa vai cadastrar seus **produtos** para ficar disponível para compra pelos clientes.
+
+![Tela](./readme-images/print-tela-cadastrar-produto.PNG)
+
+<br>
+<hr>
+<br>
+
+## Tela de Visualização do Produto
+
+Esta tela é onde o cliente pode ver mais **detalhes** sobre o **produto**.
+
+![Tela](./readme-images/print-tela-visualizar-produto-cliente.PNG)
+![Tela](./readme-images/print-tela-visualizar-produto-empresa.PNG)
+
+> Note que se autenticado como **empresa** o botão de **comprar agora** e **adicionar ao carrinho** _(botão sem ação implementada)_  não aparece.
