@@ -48,7 +48,7 @@ O frontend deve ser responsável por fornecer uma interface para os empresas e u
 
 ## Observações
 - Não se preocupe tanto com o Frontend, o foco é o Backend. Mas se seu foco é ser fullstack, você pode explorar isso desenvolvendo o front-end solicitado e vai ser um grande diferencial.
-- Aplique os seus conhecimentos e boas práticas de OOP, DDD, SOLID e Clean Code.
+- Aplique os seus conhecimentos e boas práticas de OOP, DDD, TDD, SOLID e Clean Code.
 - Não existe certo ou errado, o nosso objetivo é entender como você pensa e como você resolve problemas.
 
 ## Entrega
