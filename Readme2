@@ -1,0 +1,8 @@
+Para executar a aplicação, acesse a pasta ECommerce/ECommerce.Api/ECommerce.Api.csproj.
+
+O projeto ECommerce.Api deve estar marcado para ser o default.
+
+É preciso informar a connection string no arquivo appsetting (enviado por email)
+
+Ao rodar o projeto e abrir o Swagger, faça o login com um usuário (abaixo 2 usuários teste). O endpoint retornará o token, 
+sendo assim, cole este token no Authorize do Swagger e não esqueça de removê-o quando for feito logoff ou trocar de usuário.
